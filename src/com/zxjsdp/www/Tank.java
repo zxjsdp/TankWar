@@ -9,11 +9,33 @@ import java.awt.event.KeyEvent;
  */
 public class Tank {
     public static final int TANK_SIZE = 30;
-    public static final int X_SPEED = 5;
-    public static final int Y_SPEED = 5;
+    public static final int X_SPEED = 2;
+    public static final int Y_SPEED = 2;
     int x, y;
 
     private boolean bL = false, bU = false, bR = false, bD = false;
+
+    public void KeyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+        switch (key) {
+            case KeyEvent.VK_LEFT:
+                bL = false;
+                checkBoarder();
+                break;
+            case KeyEvent.VK_UP:
+                bU = false;
+                break;
+            case KeyEvent.VK_RIGHT:
+                bR = false;
+                checkBoarder();
+                break;
+            case KeyEvent.VK_DOWN:
+                bD = false;
+                break;
+        }
+        locateDirection();
+    }
+
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private Direction dir = Direction.STOP;
@@ -68,9 +90,6 @@ public class Tank {
 
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_RIGHT) {
-            x += 5;
-        }
         switch (key) {
             case KeyEvent.VK_LEFT:
                 bL = true;
