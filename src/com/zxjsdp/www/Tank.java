@@ -162,7 +162,7 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
-        Missile m = new Missile(x, y, ptDir);
+        Missile m = new Missile(x, y, ptDir, tc);
         tc.missiles.add(m);
         return m;
     }
