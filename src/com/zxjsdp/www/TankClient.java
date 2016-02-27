@@ -13,6 +13,8 @@ public class TankClient extends Frame {
     int x = 50;
     int y = 50;
 
+    Image offScreenImage = null;
+
     public void launchFrame() {
         this.setLocation(100, 100);
         this.setSize(1400, 900);
@@ -37,7 +39,21 @@ public class TankClient extends Frame {
         g.fillOval(x, y, 30, 30);
         g.setColor(c);
 
-        y += 1;
+        y += 2;
+    }
+
+    @Override
+    public void update(Graphics g) {
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(1400, 900);
+        }
+        Graphics gOffScreen = offScreenImage.getGraphics();
+        Color c = gOffScreen.getColor();
+        gOffScreen.setColor(Color.GREEN);
+        gOffScreen.fillRect(0, 0, 1400, 900);
+        gOffScreen.setColor(c);
+        paint(gOffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
 
     private class PaintThread implements Runnable {
@@ -45,7 +61,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
