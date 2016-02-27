@@ -10,8 +10,8 @@ import java.awt.event.KeyEvent;
 public class Tank {
     public static final int TANK_WIDTHS = 30;
     public static final int TANK_HEIGHT = 30;
-    public static final int X_SPEED = 2;
-    public static final int Y_SPEED = 2;
+    public static final int X_SPEED = 6;
+    public static final int Y_SPEED = 6;
     TankClient tc = null;
     int x, y;
 
@@ -22,14 +22,12 @@ public class Tank {
         switch (key) {
             case KeyEvent.VK_LEFT:
                 bL = false;
-                checkBoarder();
                 break;
             case KeyEvent.VK_UP:
                 bU = false;
                 break;
             case KeyEvent.VK_RIGHT:
                 bR = false;
-                checkBoarder();
                 break;
             case KeyEvent.VK_DOWN:
                 bD = false;
@@ -132,19 +130,16 @@ public class Tank {
         int key = e.getKeyCode();
         switch (key) {
             case KeyEvent.VK_CONTROL:
-                tc.myMissile = fire();
-                checkBoarder();
+                fire();
                 break;
             case KeyEvent.VK_LEFT:
                 bL = true;
-                checkBoarder();
                 break;
             case KeyEvent.VK_UP:
                 bU = true;
                 break;
             case KeyEvent.VK_RIGHT:
                 bR = true;
-                checkBoarder();
                 break;
             case KeyEvent.VK_DOWN:
                 bD = true;
@@ -168,18 +163,39 @@ public class Tank {
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
         Missile m = new Missile(x, y, ptDir);
+        tc.missiles.add(m);
         return m;
     }
 
     private void checkBoarder() {
-        if (x < 0) {
-            x = 1400;
-        } else if (x > 1400) {
-            x = 0;
-        } else if (y < 0) {
-            y = 900;
-        } else if (y > 900) {
-            y = 0;
+        if (x <= TankClient.WINDOW_INIT_POSITION + TANK_WIDTHS/2) {
+            dir = opositeDirection(dir);
+        } else if (x >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_WIDTH - TANK_WIDTHS/2) {
+            dir = opositeDirection(dir);
+        } else if (y <= TankClient.WINDOW_INIT_POSITION - Tank.TANK_HEIGHT/2) {
+            dir = opositeDirection(dir);
+        } else if (y >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_HEIGHT - TANK_HEIGHT/2) {
+            dir = opositeDirection(dir);
+        }
+    }
+
+    private Direction opositeDirection(Direction d) {
+        if (d == Direction.L) {
+            return Direction.R;
+        } else if (d == Direction.R) {
+            return Direction.L;
+        } else if (d == Direction.U) {
+            return Direction.D;
+        } else if (d == Direction.D) {
+            return Direction.U;
+        } else if (d == Direction.LU) {
+            return Direction.RD;
+        } else if (d == Direction.RU) {
+            return Direction.LD;
+        } else if (d == Direction.RD) {
+            return Direction.LU;
+        } else {
+            return Direction.RU;
         }
     }
 }

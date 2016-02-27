@@ -8,8 +8,8 @@ import java.awt.*;
 public class Missile {
     public static final int MISSILE_WIDTHS = 10;
     public static final int MISSILE_HEIGHT = 10;
-    public static final int X_SPEED = 4;
-    public static final int Y_SPEED = 4;
+    public static final int X_SPEED = 12;
+    public static final int Y_SPEED = 12;
     int x, y;
     Tank.Direction dir;
 
