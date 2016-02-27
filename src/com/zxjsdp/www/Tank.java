@@ -41,6 +41,7 @@ public class Tank {
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private Direction dir = Direction.STOP;
+    private Direction ptDir = Direction.D;
 
     public Tank(int x, int y) {
         this.x = x;
@@ -57,6 +58,34 @@ public class Tank {
         g.setColor(Color.red);
         g.fillOval(x, y, TANK_WIDTHS, TANK_HEIGHT);
         g.setColor(c);
+
+        switch (ptDir) {
+            case L:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x, y + Tank.TANK_HEIGHT / 2);
+                break;
+            case LU:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x, y);
+                break;
+            case U:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x + Tank.TANK_WIDTHS/2, y);
+                break;
+            case RU:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x + Tank.TANK_WIDTHS, y);
+                break;
+            case R:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x + Tank.TANK_WIDTHS, y + Tank.TANK_HEIGHT/2);
+                break;
+            case RD:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x + Tank.TANK_WIDTHS, y + Tank.TANK_HEIGHT);
+                break;
+            case D:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x + Tank.TANK_WIDTHS/2, y + Tank.TANK_HEIGHT);
+                break;
+            case LD:
+                g.drawLine(x + Tank.TANK_WIDTHS / 2, y + Tank.TANK_HEIGHT / 2, x, y + Tank.TANK_HEIGHT);
+                break;
+        }
+
         move();
     }
 
@@ -92,6 +121,10 @@ public class Tank {
                 break;
             case STOP:
                 break;
+        }
+
+        if (this.dir != Direction.STOP) {
+            this.ptDir = dir;
         }
     }
 
@@ -134,7 +167,7 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
-        Missile m = new Missile(x, y, dir);
+        Missile m = new Missile(x, y, ptDir);
         return m;
     }
 
