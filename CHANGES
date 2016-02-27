@@ -5,7 +5,17 @@ Versions:
 ---------
 
 
-Version 1.0 - 2016-02-28
+Version 1.1 (2016-02-28)
+------------------------
+
+- Feature: add missile for tank
+- Feature: add barrel for tank
+- Feature: add count for missiles
+- Bugfix:  remove missiles that will never be used again
+- Bugfix:  restrict tank in visual area
+
+
+Version 1.0 (2016-02-28)
 ------------------------
 
 - Feature: we can control the direction of the tank.
