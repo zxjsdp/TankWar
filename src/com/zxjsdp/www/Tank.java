@@ -105,6 +105,11 @@ public class Tank {
         if (this.dir != Direction.STOP) {
             this.ptDir = dir;
         }
+
+        if (x < 0) x = 0;
+        if (y < 30) y = 30;
+        if (x + Tank.TANK_WIDTHS > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.TANK_WIDTHS;
+        if (y + Tank.TANK_HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.TANK_HEIGHT;
     }
 
     public void keyPressed(KeyEvent e) {
