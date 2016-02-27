@@ -63,7 +63,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -75,6 +75,11 @@ public class TankClient extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             myTank.keyPressed(e);
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            myTank.KeyReleased(e);
         }
     }
 }
