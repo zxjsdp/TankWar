@@ -12,8 +12,8 @@ import java.awt.event.WindowEvent;
 public class TankClient extends Frame {
 
     public void launchFrame() {
-        this.setLocation(400, 300);
-        this.setSize(1200, 800);
+        this.setLocation(100, 100);
+        this.setSize(1400, 900);
         this.setTitle("TankWar");
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -22,6 +22,15 @@ public class TankClient extends Frame {
             }
         });
         this.setResizable(false);
+        this.setBackground(Color.green);
         setVisible(true);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.red);
+        g.fillOval(50, 50, 30, 30);
+        g.setColor(c);
     }
 }
