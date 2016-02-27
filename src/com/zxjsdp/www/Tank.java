@@ -10,13 +10,23 @@ import java.awt.event.KeyEvent;
 public class Tank {
     public static final int TANK_WIDTHS = 30;
     public static final int TANK_HEIGHT = 30;
-    public static final int X_SPEED = 6;
-    public static final int Y_SPEED = 6;
+    public static final int X_SPEED = 3;
+    public static final int Y_SPEED = 3;
     TankClient tc = null;
     int x, y;
 
     private boolean bL = false, bU = false, bR = false, bD = false;
     private boolean good;
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    private boolean live = true;
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
@@ -35,6 +45,7 @@ public class Tank {
     }
 
     public void draw(Graphics g) {
+        if (!live) return;
         Color c = g.getColor();
         if (good) g.setColor(Color.red);
         else g.setColor(Color.blue);
@@ -175,35 +186,8 @@ public class Tank {
         return m;
     }
 
-    private void checkBoarder() {
-        if (x <= TankClient.WINDOW_INIT_POSITION + TANK_WIDTHS/2) {
-            dir = opositeDirection(dir);
-        } else if (x >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_WIDTH - TANK_WIDTHS/2) {
-            dir = opositeDirection(dir);
-        } else if (y <= TankClient.WINDOW_INIT_POSITION - Tank.TANK_HEIGHT/2) {
-            dir = opositeDirection(dir);
-        } else if (y >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_HEIGHT - TANK_HEIGHT/2) {
-            dir = opositeDirection(dir);
-        }
+    public Rectangle getRect() {
+        return new Rectangle(x, y, TANK_WIDTHS, TANK_HEIGHT);
     }
 
-    private Direction opositeDirection(Direction d) {
-        if (d == Direction.L) {
-            return Direction.R;
-        } else if (d == Direction.R) {
-            return Direction.L;
-        } else if (d == Direction.U) {
-            return Direction.D;
-        } else if (d == Direction.D) {
-            return Direction.U;
-        } else if (d == Direction.LU) {
-            return Direction.RD;
-        } else if (d == Direction.RU) {
-            return Direction.LD;
-        } else if (d == Direction.RD) {
-            return Direction.LU;
-        } else {
-            return Direction.RU;
-        }
-    }
 }
