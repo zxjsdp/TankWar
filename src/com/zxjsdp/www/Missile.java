@@ -6,7 +6,7 @@ import java.awt.*;
  * Created by Jin on 2016/2/28.
  */
 public class Missile {
-    public static final int MISSILE_WIDTH = 10;
+    public static final int MISSILE_WIDTHS = 10;
     public static final int MISSILE_HEIGHT = 10;
     public static final int X_SPEED = 4;
     public static final int Y_SPEED = 4;
@@ -22,7 +22,7 @@ public class Missile {
     public void draw(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.black);
-        g.fillOval(x, y, MISSILE_WIDTH, MISSILE_HEIGHT);
+        g.fillOval(x, y, MISSILE_WIDTHS, MISSILE_HEIGHT);
         g.setColor(c);
 
         move();

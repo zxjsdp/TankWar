@@ -8,9 +8,11 @@ import java.awt.event.KeyEvent;
  * Created by Jin on 2016/2/28.
  */
 public class Tank {
-    public static final int TANK_SIZE = 30;
+    public static final int TANK_WIDTHS = 30;
+    public static final int TANK_HEIGHT = 30;
     public static final int X_SPEED = 2;
     public static final int Y_SPEED = 2;
+    TankClient tc = null;
     int x, y;
 
     private boolean bL = false, bU = false, bR = false, bD = false;
@@ -45,10 +47,15 @@ public class Tank {
         this.y = y;
     }
 
+    public Tank(int x, int y, TankClient tc) {
+        this(x, y);
+        this.tc = tc;
+    }
+
     public void draw(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.red);
-        g.fillOval(x, y, TANK_SIZE, TANK_SIZE);
+        g.fillOval(x, y, TANK_WIDTHS, TANK_HEIGHT);
         g.setColor(c);
         move();
     }
@@ -91,6 +98,10 @@ public class Tank {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
+            case KeyEvent.VK_CONTROL:
+                tc.myMissile = fire();
+                checkBoarder();
+                break;
             case KeyEvent.VK_LEFT:
                 bL = true;
                 checkBoarder();
@@ -118,6 +129,13 @@ public class Tank {
         else if (!bL && !bU && bR && bD) dir = Direction.RD;
         else if (!bL && !bU && !bR && bD) dir = Direction.D;
         else if (bL && !bU && !bR && bD) dir = Direction.LD;
+    }
+
+    public Missile fire() {
+        int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
+        int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
+        Missile m = new Missile(x, y, dir);
+        return m;
     }
 
     private void checkBoarder() {
