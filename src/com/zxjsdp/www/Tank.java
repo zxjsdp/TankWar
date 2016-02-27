@@ -17,25 +17,6 @@ public class Tank {
 
     private boolean bL = false, bU = false, bR = false, bD = false;
 
-    public void KeyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        switch (key) {
-            case KeyEvent.VK_LEFT:
-                bL = false;
-                break;
-            case KeyEvent.VK_UP:
-                bU = false;
-                break;
-            case KeyEvent.VK_RIGHT:
-                bR = false;
-                break;
-            case KeyEvent.VK_DOWN:
-                bD = false;
-                break;
-        }
-        locateDirection();
-    }
-
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private Direction dir = Direction.STOP;
@@ -143,6 +124,25 @@ public class Tank {
                 break;
             case KeyEvent.VK_DOWN:
                 bD = true;
+                break;
+        }
+        locateDirection();
+    }
+
+    public void KeyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+        switch (key) {
+            case KeyEvent.VK_LEFT:
+                bL = false;
+                break;
+            case KeyEvent.VK_UP:
+                bU = false;
+                break;
+            case KeyEvent.VK_RIGHT:
+                bR = false;
+                break;
+            case KeyEvent.VK_DOWN:
+                bD = false;
                 break;
         }
         locateDirection();
