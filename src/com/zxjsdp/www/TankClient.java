@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
  */
 
 public class TankClient extends Frame {
+    int x = 50;
+    int y = 50;
 
     public void launchFrame() {
         this.setLocation(100, 100);
@@ -24,13 +26,30 @@ public class TankClient extends Frame {
         this.setResizable(false);
         this.setBackground(Color.green);
         setVisible(true);
+
+        new Thread(new PaintThread()).start();
     }
 
     @Override
     public void paint(Graphics g) {
         Color c = g.getColor();
         g.setColor(Color.red);
-        g.fillOval(50, 50, 30, 30);
+        g.fillOval(x, y, 30, 30);
         g.setColor(c);
+
+        y += 1;
+    }
+
+    private class PaintThread implements Runnable {
+        public void run() {
+            while (true) {
+                repaint();
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
