@@ -58,10 +58,13 @@ public class Tank {
     }
 
     public void draw(Graphics g) {
-        if (!live) {
+        if (!live && !this.isGood()) {
             tc.tanks.remove(this);
             return;
-        };
+        } else if(!live && this.isGood()) {
+            this.live = false;
+            return;
+        }
         Color c = g.getColor();
         if (good) g.setColor(Color.red);
         else g.setColor(Color.blue);
