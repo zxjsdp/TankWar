@@ -1,6 +1,7 @@
 package com.zxjsdp.www;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Jin on 2016/2/28.
@@ -90,6 +91,15 @@ public class Missile {
             Explode e = new Explode(x, y, tc);
             tc.explodes.add(e);
             return true;
+        }
+        return false;
+    }
+
+    public boolean hitTanks(List<Tank> tanks) {
+        for (int i=0; i<tanks.size(); i++) {
+            if (this.hitTank(tc.tanks.get(i)))
+                tc.tanks.remove(i);
+                return true;
         }
         return false;
     }
