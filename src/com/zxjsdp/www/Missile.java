@@ -1,6 +1,7 @@
 package com.zxjsdp.www;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by Jin on 2016/2/28.
@@ -15,14 +16,21 @@ public class Missile {
     TankClient tc = null;
     private boolean live = true;
 
+    public boolean isGood() {
+        return good;
+    }
+
+    private boolean good;
+
     public Missile(int x, int y, Tank.Direction dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
-    public Missile(int x, int y, Tank.Direction dir, TankClient tc) {
+    public Missile(int x, int y, boolean good, Tank.Direction dir, TankClient tc) {
         this(x, y, dir);
+        this.good = good;
         this.tc = tc;
     }
 
@@ -84,12 +92,20 @@ public class Missile {
     }
 
     public boolean hitTank(Tank t) {
-        if (this.getRect().intersects(t.getRect()) && t.isLive()) {
+        if (this.isLive() && this.getRect().intersects(t.getRect()) && t.isLive() && this.good != t.isGood()) {
             t.setLive(false);
             this.live = false;
             Explode e = new Explode(x, y, tc);
             tc.explodes.add(e);
             return true;
+        }
+        return false;
+    }
+
+    public boolean hitTanks(List<Tank> tanks) {
+        for (int i=0; i<tanks.size(); i++) {
+            if (this.hitTank(tc.tanks.get(i)))
+                return true;
         }
         return false;
     }
