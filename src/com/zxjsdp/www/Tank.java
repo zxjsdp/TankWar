@@ -3,6 +3,7 @@ package com.zxjsdp.www;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 /**
  * Created by Jin on 2016/2/28.
@@ -10,31 +11,63 @@ import java.awt.event.KeyEvent;
 public class Tank {
     public static final int TANK_WIDTHS = 30;
     public static final int TANK_HEIGHT = 30;
-    public static final int X_SPEED = 6;
-    public static final int Y_SPEED = 6;
+    private static final int X_SPEED = 7;
+    private static final int Y_SPEED = 7;
+    private static final int MAXIMUM_STEP = 15;
+    private static final int FIRE_FREQUENCY = 100;
     TankClient tc = null;
     int x, y;
 
     private boolean bL = false, bU = false, bR = false, bD = false;
+
+    public boolean isGood() {
+        return good;
+    }
+
+    private boolean good;
+
+    private static Random r = new Random();
+
+    public void setLive(boolean live) {
+        this.live = live;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    private boolean live = true;
 
     enum Direction {L, LU, U, RU, R, RD, D, LD, STOP}
 
     private Direction dir = Direction.STOP;
     private Direction ptDir = Direction.D;
 
-    public Tank(int x, int y) {
+    private int step = r.nextInt(MAXIMUM_STEP) + 1;
+
+    public Tank(int x, int y, boolean good) {
         this.x = x;
         this.y = y;
+        this.good = good;
     }
 
-    public Tank(int x, int y, TankClient tc) {
-        this(x, y);
+    public Tank(int x, int y, boolean good, Direction dir, TankClient tc) {
+        this(x, y, good);
+        this.dir = dir;
         this.tc = tc;
     }
 
     public void draw(Graphics g) {
+        if (!live && !this.isGood()) {
+            tc.tanks.remove(this);
+            return;
+        } else if(!live && this.isGood()) {
+            this.live = false;
+            return;
+        }
         Color c = g.getColor();
-        g.setColor(Color.red);
+        if (good) g.setColor(Color.red);
+        else g.setColor(Color.blue);
         g.fillOval(x, y, TANK_WIDTHS, TANK_HEIGHT);
         g.setColor(c);
 
@@ -110,6 +143,18 @@ public class Tank {
         if (y < 30) y = 30;
         if (x + Tank.TANK_WIDTHS > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.TANK_WIDTHS;
         if (y + Tank.TANK_HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.TANK_HEIGHT;
+
+        if (!good) {
+            if (step == 0) {
+                step = r.nextInt(MAXIMUM_STEP) + 1;
+                Direction[] dirs = Direction.values();
+                int rn = r.nextInt(dirs.length);
+                this.dir = dirs[rn];
+            }
+            step--;
+            if (r.nextInt(FIRE_FREQUENCY) > 96)
+                this.fire();
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -167,40 +212,13 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
-        Missile m = new Missile(x, y, ptDir, tc);
+        Missile m = new Missile(x, y, this.good, ptDir, tc);
         tc.missiles.add(m);
         return m;
     }
 
-    private void checkBoarder() {
-        if (x <= TankClient.WINDOW_INIT_POSITION + TANK_WIDTHS/2) {
-            dir = opositeDirection(dir);
-        } else if (x >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_WIDTH - TANK_WIDTHS/2) {
-            dir = opositeDirection(dir);
-        } else if (y <= TankClient.WINDOW_INIT_POSITION - Tank.TANK_HEIGHT/2) {
-            dir = opositeDirection(dir);
-        } else if (y >= TankClient.WINDOW_INIT_POSITION + TankClient.GAME_HEIGHT - TANK_HEIGHT/2) {
-            dir = opositeDirection(dir);
-        }
+    public Rectangle getRect() {
+        return new Rectangle(x, y, TANK_WIDTHS, TANK_HEIGHT);
     }
 
-    private Direction opositeDirection(Direction d) {
-        if (d == Direction.L) {
-            return Direction.R;
-        } else if (d == Direction.R) {
-            return Direction.L;
-        } else if (d == Direction.U) {
-            return Direction.D;
-        } else if (d == Direction.D) {
-            return Direction.U;
-        } else if (d == Direction.LU) {
-            return Direction.RD;
-        } else if (d == Direction.RU) {
-            return Direction.LD;
-        } else if (d == Direction.RD) {
-            return Direction.LU;
-        } else {
-            return Direction.RU;
-        }
-    }
 }
