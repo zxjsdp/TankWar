@@ -17,6 +17,7 @@ public class TankClient extends Frame {
     public static final int WINDOW_INIT_POSITION = 100;
     public static final int GAME_WIDTH = 1400;
     public static final int GAME_HEIGHT = 900;
+    public static final int REFRESH_TIME = 50;
 
     Tank myTank = new Tank(80, 80, true, Tank.Direction.STOP, this);
 
@@ -91,7 +92,7 @@ public class TankClient extends Frame {
             while (true) {
                 repaint();
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(REFRESH_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

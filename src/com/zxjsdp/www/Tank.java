@@ -11,8 +11,9 @@ import java.util.Random;
 public class Tank {
     public static final int TANK_WIDTHS = 30;
     public static final int TANK_HEIGHT = 30;
-    public static final int X_SPEED = 3;
-    public static final int Y_SPEED = 3;
+    public static final int X_SPEED = 7;
+    public static final int Y_SPEED = 7;
+    public static final int MAXIMUM_STEP = 15;
     TankClient tc = null;
     int x, y;
 
@@ -35,6 +36,8 @@ public class Tank {
 
     private Direction dir = Direction.STOP;
     private Direction ptDir = Direction.D;
+
+    private int step = r.nextInt(MAXIMUM_STEP) + 1;
 
     public Tank(int x, int y, boolean good) {
         this.x = x;
@@ -133,9 +136,13 @@ public class Tank {
         if (y + Tank.TANK_HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.TANK_HEIGHT;
 
         if (!good) {
-            Direction[] dirs = Direction.values();
-            int rn = r.nextInt(dirs.length);
-            this.dir = dirs[rn];
+            if (step == 0) {
+                step = r.nextInt(MAXIMUM_STEP) + 1;
+                Direction[] dirs = Direction.values();
+                int rn = r.nextInt(dirs.length);
+                this.dir = dirs[rn];
+            }
+            step--;
         }
     }
 
