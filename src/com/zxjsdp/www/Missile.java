@@ -98,7 +98,6 @@ public class Missile {
     public boolean hitTanks(List<Tank> tanks) {
         for (int i=0; i<tanks.size(); i++) {
             if (this.hitTank(tc.tanks.get(i)))
-                tc.tanks.remove(i);
                 return true;
         }
         return false;

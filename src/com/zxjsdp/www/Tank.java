@@ -3,6 +3,7 @@ package com.zxjsdp.www;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 /**
  * Created by Jin on 2016/2/28.
@@ -17,6 +18,8 @@ public class Tank {
 
     private boolean bL = false, bU = false, bR = false, bD = false;
     private boolean good;
+
+    private static Random r = new Random();
 
     public void setLive(boolean live) {
         this.live = live;
@@ -39,13 +42,17 @@ public class Tank {
         this.good = good;
     }
 
-    public Tank(int x, int y, boolean good, TankClient tc) {
+    public Tank(int x, int y, boolean good, Direction dir, TankClient tc) {
         this(x, y, good);
+        this.dir = dir;
         this.tc = tc;
     }
 
     public void draw(Graphics g) {
-        if (!live) return;
+        if (!live) {
+            tc.tanks.remove(this);
+            return;
+        };
         Color c = g.getColor();
         if (good) g.setColor(Color.red);
         else g.setColor(Color.blue);
@@ -124,6 +131,12 @@ public class Tank {
         if (y < 30) y = 30;
         if (x + Tank.TANK_WIDTHS > TankClient.GAME_WIDTH) x = TankClient.GAME_WIDTH - Tank.TANK_WIDTHS;
         if (y + Tank.TANK_HEIGHT > TankClient.GAME_HEIGHT) y = TankClient.GAME_HEIGHT - Tank.TANK_HEIGHT;
+
+        if (!good) {
+            Direction[] dirs = Direction.values();
+            int rn = r.nextInt(dirs.length);
+            this.dir = dirs[rn];
+        }
     }
 
     public void keyPressed(KeyEvent e) {
