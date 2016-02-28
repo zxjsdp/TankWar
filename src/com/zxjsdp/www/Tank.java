@@ -11,13 +11,19 @@ import java.util.Random;
 public class Tank {
     public static final int TANK_WIDTHS = 30;
     public static final int TANK_HEIGHT = 30;
-    public static final int X_SPEED = 7;
-    public static final int Y_SPEED = 7;
-    public static final int MAXIMUM_STEP = 15;
+    private static final int X_SPEED = 7;
+    private static final int Y_SPEED = 7;
+    private static final int MAXIMUM_STEP = 15;
+    private static final int FIRE_FREQUENCY = 100;
     TankClient tc = null;
     int x, y;
 
     private boolean bL = false, bU = false, bR = false, bD = false;
+
+    public boolean isGood() {
+        return good;
+    }
+
     private boolean good;
 
     private static Random r = new Random();
@@ -143,6 +149,8 @@ public class Tank {
                 this.dir = dirs[rn];
             }
             step--;
+            if (r.nextInt(FIRE_FREQUENCY) > 96)
+                this.fire();
         }
     }
 
@@ -201,7 +209,7 @@ public class Tank {
     public Missile fire() {
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
-        Missile m = new Missile(x, y, ptDir, tc);
+        Missile m = new Missile(x, y, this.good, ptDir, tc);
         tc.missiles.add(m);
         return m;
     }

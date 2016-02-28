@@ -16,14 +16,21 @@ public class Missile {
     TankClient tc = null;
     private boolean live = true;
 
+    public boolean isGood() {
+        return good;
+    }
+
+    private boolean good;
+
     public Missile(int x, int y, Tank.Direction dir) {
         this.x = x;
         this.y = y;
         this.dir = dir;
     }
 
-    public Missile(int x, int y, Tank.Direction dir, TankClient tc) {
+    public Missile(int x, int y, boolean good, Tank.Direction dir, TankClient tc) {
         this(x, y, dir);
+        this.good = good;
         this.tc = tc;
     }
 
@@ -85,7 +92,7 @@ public class Missile {
     }
 
     public boolean hitTank(Tank t) {
-        if (this.getRect().intersects(t.getRect()) && t.isLive()) {
+        if (this.getRect().intersects(t.getRect()) && t.isLive() && this.good != t.isGood()) {
             t.setLive(false);
             this.live = false;
             Explode e = new Explode(x, y, tc);

@@ -21,9 +21,9 @@ public class TankClient extends Frame {
 
     Tank myTank = new Tank(80, 80, true, Tank.Direction.STOP, this);
 
-    List<Tank> tanks = new ArrayList<Tank>();
-    List<Explode> explodes = new ArrayList<Explode>();
-    List<Missile> missiles = new ArrayList<Missile>();
+    List<Tank> tanks = new ArrayList<>();
+    List<Explode> explodes = new ArrayList<>();
+    List<Missile> missiles = new ArrayList<>();
 
     Image offScreenImage = null;
 
