@@ -20,6 +20,7 @@ public class TankClient extends Frame {
 
     Tank myTank = new Tank(80, 80, true, this);
     Tank enemyTank = new Tank(100, 100 ,false, this);
+    Explode e = new Explode(70, 70, this);
     List<Missile> missiles = new ArrayList<Missile>();
 
     Image offScreenImage = null;
@@ -53,6 +54,7 @@ public class TankClient extends Frame {
         }
         myTank.draw(g);
         enemyTank.draw(g);
+        e.draw(g);
     }
 
     @Override
