@@ -58,11 +58,12 @@ public class Tank {
     }
 
     public void draw(Graphics g) {
-        if (!live && !this.isGood()) {
-            tc.tanks.remove(this);
-            return;
-        } else if(!live && this.isGood()) {
-            this.live = false;
+        if (!live) {
+            if (!this.isGood()) {
+                tc.tanks.remove(this);
+            } else if(this.isGood()) {
+                this.live = false;
+            }
             return;
         }
         Color c = g.getColor();
@@ -210,6 +211,7 @@ public class Tank {
     }
 
     public Missile fire() {
+        if (!this.isLive()) return null;
         int x = this.x + Tank.TANK_WIDTHS / 2 - Missile.MISSILE_WIDTHS / 2;
         int y = this.y + Tank.TANK_HEIGHT / 2 - Missile.MISSILE_HEIGHT / 2;
         Missile m = new Missile(x, y, this.good, ptDir, tc);
